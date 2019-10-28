@@ -25,7 +25,7 @@ abstract class RecordingDatabase : RoomDatabase() {
             return Room.databaseBuilder(context, RecordingDatabase::class.java, databaseName)
                 .build()
         }
-        
+
     }
 
 }
