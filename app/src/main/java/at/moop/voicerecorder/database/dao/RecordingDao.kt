@@ -28,4 +28,7 @@ interface RecordingDao {
     @Delete
     fun delete(recording: Recording)
 
+    @Query("DELETE FROM recording")
+    fun deleteAll()
+
 }
