@@ -7,6 +7,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import at.moop.voicerecorder.R
@@ -18,6 +19,8 @@ import java.util.*
 class RecordingService : Service() {
 
     val repository: RecordingRepository by inject()
+    val tickHandler = Handler()
+    val tickRunnable = TickRunnable(tickHandler)
 
     var recording: Recording? = null
     var isRecording = false
@@ -72,6 +75,8 @@ class RecordingService : Service() {
             repository.storeRecording(this)
         }
 
+        startTicking()
+
     }
 
     private fun stopRecording() {
@@ -85,6 +90,11 @@ class RecordingService : Service() {
         stopSelf()
     }
 
+    override fun onDestroy() {
+        stopTicking()
+        super.onDestroy()
+    }
+
     private fun getNotification(): Notification {
         val builder = NotificationCompat.Builder(this, createDefaultNotificationChannel())
             .setSmallIcon(R.drawable.ic_stat_mic_none)
@@ -93,6 +103,14 @@ class RecordingService : Service() {
             .setOngoing(true)
 
         return builder.build()
+    }
+
+    private fun startTicking() {
+        tickHandler.post(tickRunnable)
+    }
+
+    private fun stopTicking() {
+        tickHandler.removeCallbacksAndMessages(null)
     }
 
     private fun createDefaultNotificationChannel(): String {
@@ -111,5 +129,15 @@ class RecordingService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         throw NotImplementedError()
+    }
+
+    inner class TickRunnable(private val handler: Handler) : Runnable {
+
+        override fun run() {
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.notify(SERVICE_ID, getNotification())
+            handler.postDelayed(this, 1000)
+        }
+
     }
 }
