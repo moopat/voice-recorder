@@ -65,6 +65,12 @@ class PlaybackActivity : AppCompatActivity() {
             }
         }
 
+        buttonDelete.setOnLongClickListener {
+            model.deleteRecording(this)
+            finish()
+            true
+        }
+
         seekbarUpdateHandler.post(UpdateSeekbarRunnable())
         model.setRecordingId(id)
     }

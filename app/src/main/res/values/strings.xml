@@ -9,4 +9,5 @@
     <string name="main_button_show_all">Show recordings</string>
     <string name="recordings_title">Recordings</string>
     <string name="recordings_item_today">Today, %s</string>
+    <string name="recordings_delete">Long-press to delete</string>
 </resources>

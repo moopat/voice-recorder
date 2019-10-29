@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.PlaybackActivity" />
+        <activity
+            android:name=".ui.PlaybackActivity"
+            android:theme="@style/AppTheme.Dialog" />
         <activity
             android:name=".ui.RecordingsActivity"
             android:label="@string/recordings_title" />
