@@ -1,10 +1,7 @@
 package at.moop.voicerecorder.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import at.moop.voicerecorder.model.Recording
 
 /**
@@ -20,9 +17,12 @@ interface RecordingDao {
     fun getByUid(uid: String): Recording?
 
     @Query("SELECT * FROM recording WHERE endTime IS NULL LIMIT 1")
-    fun getActiveRecording(): LiveData<Recording?>
+    fun getActiveRecordingLive(): LiveData<Recording?>
 
-    @Insert
+    @Query("SELECT * FROM recording WHERE endTime IS NULL LIMIT 1")
+    fun getActiveRecording(): Recording?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(recording: Recording)
 
     @Delete

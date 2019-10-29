@@ -1,16 +1,30 @@
 package at.moop.voicerecorder
 
-import at.moop.voicerecorder.di.module.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import at.moop.voicerecorder.database.RecordingDatabase
+import at.moop.voicerecorder.viewmodel.MainActivityViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 /**
  * @author Markus Deutsch <markus@moop.at>
  */
-class RecorderApplication : DaggerApplication() {
+class RecorderApplication : Application() {
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.factory().create(this)
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@RecorderApplication)
+            modules(module {
+                single { RecordingDatabase.buildDatabase(androidContext()) }
+                viewModel { MainActivityViewModel(get()) }
+            })
+        }
     }
 
 }
