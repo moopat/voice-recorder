@@ -11,7 +11,9 @@ import android.view.View
 import android.view.animation.BounceInterpolator
 import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import at.moop.voicerecorder.R
+import kotlin.math.max
 import kotlin.math.min
 
 /**
@@ -22,6 +24,7 @@ class RockingCircle(context: Context, attrs: AttributeSet) : View(context, attrs
     companion object {
         private const val GROW_ANIMATION_DURATION: Long = 800
         private const val SHRINK_ANIMATION_DURATION: Long = 1500
+        private const val MAX_ALPHA = 255
     }
 
     private var fillColor = ContextCompat.getColor(context, R.color.colorBounceFill)
@@ -83,11 +86,12 @@ class RockingCircle(context: Context, attrs: AttributeSet) : View(context, attrs
         targetRadius = getMaxRadius() * targetRadiusRatio
     }
 
-    private fun getMaxRadius() = min(availableH, availableW) / 2
+    private fun getMaxRadius() = max(min(availableH, availableW) / 2, 1)
+
+    private fun getCurrentRatio() = currentRadius / getMaxRadius()
 
     fun setRadiusRatio(ratio: Float) {
-        val currentlyDisplayedRatio = currentRadius / getMaxRadius()
-        if (ratio < currentlyDisplayedRatio) {
+        if (ratio < getCurrentRatio()) {
             // Avoid too quick shrinking.
             return
         }
@@ -113,8 +117,14 @@ class RockingCircle(context: Context, attrs: AttributeSet) : View(context, attrs
                 availableW.toFloat().div(2),
                 availableH.toFloat().div(2),
                 currentRadius,
-                circlePaint
+                circlePaint.apply {
+                    color = ColorUtils.setAlphaComponent(
+                        fillColor,
+                        getCurrentRatio().times(MAX_ALPHA).toInt()
+                    )
+                }
             )
         }
     }
+
 }
