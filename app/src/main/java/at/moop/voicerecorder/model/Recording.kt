@@ -16,10 +16,11 @@ data class Recording(
 
     fun isRunning() = endTime == null
 
-    // TODO: Let this method return the current recording duration for running recordings?
-    fun getDuration(): Long? {
+    fun getDuration(ongoing: Boolean = true): Long? {
 
-        endTime?.let {
+        val endTimeForCalculation = endTime ?: if(ongoing) Date() else null
+
+        endTimeForCalculation?.let {
             return it.time - startTime.time
         }
 

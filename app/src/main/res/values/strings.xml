@@ -3,4 +3,7 @@
     <string name="main_button_toggle_cd">Start or Stop Recording</string>
     <string name="main_status_recording">Recording…</string>
     <string name="main_status_idle">Idle</string>
+    <string name="notification_channel_name">Current Recording</string>
+    <string name="notification_channel_description">Shown when a recording is in progress</string>
+    <string name="notification_title">Recording audio...</string>
 </resources>
