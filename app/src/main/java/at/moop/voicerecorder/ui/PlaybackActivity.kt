@@ -76,12 +76,12 @@ class PlaybackActivity : AppCompatActivity() {
             return
         }
 
-        buttonTogglePlayback.setImageResource(R.drawable.ic_stop_40dp)
+        buttonTogglePlayback.setImageResource(R.drawable.ic_stop)
 
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
             setOnCompletionListener {
-                buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow_40dp)
+                buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow)
                 model.progress.postValue(0)
             }
             setDataSource(mediaFile.path)
@@ -97,7 +97,7 @@ class PlaybackActivity : AppCompatActivity() {
         mediaPlayer?.release()
         mediaPlayer = null
         model.progress.postValue(0)
-        buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow_40dp)
+        buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow)
     }
 
     override fun onStop() {
