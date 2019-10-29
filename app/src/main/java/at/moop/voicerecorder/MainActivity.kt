@@ -1,7 +1,11 @@
 package at.moop.voicerecorder
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import at.moop.voicerecorder.service.RecordingService
 import at.moop.voicerecorder.viewmodel.MainActivityViewModel
@@ -9,6 +13,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val RC_PERMISSION = 1
+    }
 
     val model: MainActivityViewModel by viewModel()
 
@@ -25,7 +33,40 @@ class MainActivity : AppCompatActivity() {
         })
 
         buttonToggleRecording.setOnClickListener {
-            RecordingService.toggleRecording(this)
+            if (hasRecordingPermission()) {
+                toggleRecording()
+            } else {
+                requestRecordingPermission()
+            }
+        }
+    }
+
+    private fun toggleRecording() {
+        RecordingService.toggleRecording(this)
+    }
+
+    private fun hasRecordingPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestRecordingPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.RECORD_AUDIO),
+            RC_PERMISSION
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (hasRecordingPermission()) {
+            toggleRecording()
+        } else {
+            // TODO: Remember that the permission was denied.
         }
     }
 }

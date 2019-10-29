@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.media.MediaRecorder
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -14,6 +15,7 @@ import at.moop.voicerecorder.R
 import at.moop.voicerecorder.database.repository.RecordingRepository
 import at.moop.voicerecorder.model.Recording
 import org.koin.android.ext.android.inject
+import java.io.File
 import java.util.*
 
 class RecordingService : Service() {
@@ -24,6 +26,8 @@ class RecordingService : Service() {
 
     var recording: Recording? = null
     var isRecording = false
+
+    lateinit var recorder: MediaRecorder
 
     companion object {
 
@@ -39,6 +43,15 @@ class RecordingService : Service() {
             }
         }
 
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -67,8 +80,15 @@ class RecordingService : Service() {
     private fun startRecording() {
         isRecording = true
 
+        val id = UUID.randomUUID().toString()
+        val file = File(filesDir, id)
+
+        recorder.setOutputFile(file.path)
+        recorder.prepare()
+        recorder.start()
+
         recording = Recording(
-            UUID.randomUUID().toString(),
+            id,
             Date(),
             null
         ).apply {
@@ -86,6 +106,8 @@ class RecordingService : Service() {
             it.endTime = Date()
             repository.storeRecording(it)
         }
+
+        recorder.stop()
 
         stopSelf()
     }
