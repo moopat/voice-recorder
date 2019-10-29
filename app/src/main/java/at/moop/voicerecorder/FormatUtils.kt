@@ -17,7 +17,7 @@ fun Long.formatAsDuration(): String {
     val seconds = TimeUnit.MILLISECONDS.toSeconds(remainder)
 
     return if (hours > 0) {
-        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        String.format("%d:%02d:%02d", hours, minutes, seconds)
     } else {
         String.format("%02d:%02d", minutes, seconds)
     }
