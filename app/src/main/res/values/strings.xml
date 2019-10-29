@@ -7,4 +7,6 @@
     <string name="notification_channel_description">Shown when a recording is in progress</string>
     <string name="notification_title">Recording audio…</string>
     <string name="main_button_show_all">Show recordings</string>
+    <string name="recordings_title">Recordings</string>
+    <string name="recordings_item_today">Today, %s</string>
 </resources>

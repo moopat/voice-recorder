@@ -1,5 +1,6 @@
 package at.moop.voicerecorder.adapter
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.adapter.vh.RecordingViewHolder
+import at.moop.voicerecorder.formatAsDuration
 import at.moop.voicerecorder.model.Recording
 import java.text.DateFormat
+import java.util.*
 
 /**
  * @author Markus Deutsch <markus@moop.at>
@@ -17,7 +20,11 @@ class RecordingsAdapter(private val clickHandler: (recording: Recording) -> Unit
     RecyclerView.Adapter<RecordingViewHolder>() {
 
     private val items = mutableListOf<Recording>()
-    private val dateFormat = DateFormat.getDateTimeInstance()
+    private val dateFormat = DateFormat.getDateInstance()
+    private val dateTimeFormat = DateFormat.getDateTimeInstance()
+    private val timeFormat = DateFormat.getTimeInstance()
+
+    private val todayAsString = dateFormat.format(Date())
 
     fun setData(data: List<Recording>) {
         items.clear()
@@ -55,8 +62,8 @@ class RecordingsAdapter(private val clickHandler: (recording: Recording) -> Unit
             holder.tvDuration.text = null
             holder.itemView.setOnClickListener {}
         } else {
-            holder.tvDate.text = dateFormat.format(item.startTime)
-            holder.tvDuration.text = item.getDuration(false)?.toString()
+            holder.tvDate.text = item.getStartTimeString(holder.itemView.context)
+            holder.tvDuration.text = item.getDuration(false)?.formatAsDuration()
 
             holder.itemView.setOnClickListener {
                 clickHandler.invoke(item)
@@ -68,6 +75,14 @@ class RecordingsAdapter(private val clickHandler: (recording: Recording) -> Unit
 
     private fun getRecordingHue(recording: Recording): Float {
         val duration = recording.getDuration(true) ?: 0
-        return duration.rem(365).toFloat()
+        return duration.rem(70).toFloat()
+    }
+
+    private fun Recording.getStartTimeString(context: Context): String {
+        if (dateFormat.format(startTime) == todayAsString) {
+            return context.getString(R.string.recordings_item_today, timeFormat.format(startTime))
+        } else {
+            return dateTimeFormat.format(startTime)
+        }
     }
 }
