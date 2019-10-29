@@ -31,7 +31,7 @@ class PlaybackActivity : AppCompatActivity() {
     }
 
     private val model: PlaybackViewModel by viewModel()
-    private var mediaPlayer: MediaPlayer? = null
+    var mediaPlayer: MediaPlayer? = null
     private var seekbarUpdateHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {

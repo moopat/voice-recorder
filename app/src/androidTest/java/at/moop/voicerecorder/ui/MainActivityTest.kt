@@ -1,29 +1,36 @@
-package at.moop.voicerecorder
+package at.moop.voicerecorder.ui
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import androidx.test.rule.GrantPermissionRule
+import at.moop.voicerecorder.BaseIntegrationTest
+import at.moop.voicerecorder.R
 import at.moop.voicerecorder.database.RecordingDatabase
-import at.moop.voicerecorder.ui.MainActivity
 import org.junit.After
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
 
 
 /**
  * @author Markus Deutsch <markus@moop.at>
  */
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainActivityTest : BaseIntegrationTest() {
 
     @get:Rule
     val rule = ActivityTestRule(MainActivity::class.java)
+
+    // For the sake of the test we assume that the permission is granted.
+    @get:Rule
+    var permissionRule = GrantPermissionRule.grant(android.Manifest.permission.RECORD_AUDIO)
 
     @Before
     @After
@@ -54,6 +61,28 @@ class MainActivityTest {
         onView(withId(R.id.tvStatus)).check(matches(withText(R.string.main_status_idle)))
     }
 
-    private fun getContext() = InstrumentationRegistry.getInstrumentation().targetContext
+    @Test
+    fun testRecording() {
+
+        // Start recording.
+        onView(withId(R.id.buttonToggleRecording)).perform(click())
+
+        delay(2000)
+
+        // Get the id of the ongoing recording.
+        val dao = RecordingDatabase.buildDatabase(getContext()).getRecordingDao()
+        val recording = dao.getActiveRecording()
+        assertNotNull(recording) // The recording should exist in the database.
+
+        // Stop recording.
+        onView(withId(R.id.buttonToggleRecording)).perform(click())
+        delay(100)
+
+        // There should be no active recording.
+        assertNull(dao.getActiveRecording())
+
+        // A recording file exists.
+        assertTrue(File(getContext().filesDir, recording!!.uid).exists())
+    }
 
 }
