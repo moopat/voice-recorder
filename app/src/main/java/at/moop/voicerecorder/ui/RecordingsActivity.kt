@@ -18,7 +18,9 @@ class RecordingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recordings)
 
-        adapter = RecordingsAdapter { }
+        adapter = RecordingsAdapter {
+            startActivity(PlaybackActivity.getIntent(this, it.uid))
+        }
         recyclerView.adapter = adapter
 
         model.recordings.observe(this, Observer {
