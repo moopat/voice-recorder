@@ -32,6 +32,8 @@ class RecordingService : Service() {
     companion object {
 
         const val SERVICE_ID = 1
+        const val BROADCAST_AMPLITUDE = "at.moop.voicerecorder.AMPLITUDE"
+        const val EXTRA_AMPLITUDE = "amp"
 
         @JvmStatic
         fun toggleRecording(context: Context) {
@@ -158,6 +160,11 @@ class RecordingService : Service() {
         override fun run() {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(SERVICE_ID, getNotification())
+
+            sendBroadcast(Intent(BROADCAST_AMPLITUDE).apply {
+                putExtra(EXTRA_AMPLITUDE, recorder.maxAmplitude)
+            })
+
             handler.postDelayed(this, 1000)
         }
 

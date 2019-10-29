@@ -1,7 +1,10 @@
 package at.moop.voicerecorder.ui
 
 import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -25,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
     val model: MainActivityViewModel by viewModel()
     val tickHandler = Handler()
+    val receiver = AmplitudeReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +65,13 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         startTicking()
+        registerReceiver(receiver, IntentFilter(RecordingService.BROADCAST_AMPLITUDE))
     }
 
     override fun onPause() {
         super.onPause()
         stopTicking()
+        unregisterReceiver(receiver)
     }
 
     private fun startTicking() {
@@ -111,6 +117,15 @@ class MainActivity : AppCompatActivity() {
                 updateDuration()
                 tickHandler.postDelayed(this, 100)
             }
+        }
+
+    }
+
+    inner class AmplitudeReceiver : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val amplitude = intent?.getIntExtra(RecordingService.EXTRA_AMPLITUDE, 0) ?: 0
+            bouncingCircle.setRadiusRatio(amplitude.toFloat().div(1000))
         }
 
     }

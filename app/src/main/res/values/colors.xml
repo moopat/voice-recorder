@@ -8,4 +8,6 @@
 
     <color name="colorStateRecording">@color/colorAccent</color>
     <color name="colorStateIdle">#1B1B1B</color>
+
+    <color name="colorBounceFill">#DFA6A6</color>
 </resources>
