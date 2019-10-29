@@ -5,6 +5,7 @@ import at.moop.voicerecorder.database.RecordingDatabase
 import at.moop.voicerecorder.database.repository.RecordingRepository
 import at.moop.voicerecorder.database.repository.RecordingRepositoryImpl
 import at.moop.voicerecorder.viewmodel.MainActivityViewModel
+import at.moop.voicerecorder.viewmodel.PlaybackViewModel
 import at.moop.voicerecorder.viewmodel.RecordingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -28,6 +29,7 @@ class RecorderApplication : Application() {
                 single { RecordingRepositoryImpl(get()) as RecordingRepository }
                 viewModel { MainActivityViewModel(get()) }
                 viewModel { RecordingsViewModel(get()) }
+                viewModel { PlaybackViewModel(get()) }
             })
         }
     }

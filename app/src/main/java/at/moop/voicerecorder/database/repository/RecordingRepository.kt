@@ -10,6 +10,8 @@ interface RecordingRepository {
 
     fun getActiveRecording(callback: (recording: Recording?) -> Unit)
 
+    fun getRecording(id: String, callback: (recording: Recording?) -> Unit)
+
     fun deleteRecording(recording: Recording)
 
     fun storeRecording(recording: Recording)

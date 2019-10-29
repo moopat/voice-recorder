@@ -9,6 +9,12 @@ import at.moop.voicerecorder.model.Recording
  */
 class RecordingRepositoryImpl(private val database: RecordingDatabase) : RecordingRepository {
 
+    override fun getRecording(id: String, callback: (recording: Recording?) -> Unit) {
+        Thread(Runnable {
+            callback.invoke(database.getRecordingDao().getByUid(id))
+        }).start()
+    }
+
     override fun getAllRecordings(): LiveData<List<Recording>> {
         return database.getRecordingDao().getAllLive()
     }
