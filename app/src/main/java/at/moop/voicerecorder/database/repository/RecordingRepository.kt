@@ -1,5 +1,6 @@
 package at.moop.voicerecorder.database.repository
 
+import androidx.lifecycle.LiveData
 import at.moop.voicerecorder.model.Recording
 
 /**
@@ -12,5 +13,7 @@ interface RecordingRepository {
     fun deleteRecording(recording: Recording)
 
     fun storeRecording(recording: Recording)
+
+    fun getAllRecordings(): LiveData<List<Recording>>
 
 }

@@ -1,12 +1,14 @@
-package at.moop.voicerecorder
+package at.moop.voicerecorder.ui
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import at.moop.voicerecorder.R
 import at.moop.voicerecorder.service.RecordingService
 import at.moop.voicerecorder.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,6 +40,10 @@ class MainActivity : AppCompatActivity() {
             } else {
                 requestRecordingPermission()
             }
+        }
+
+        buttonShowAll.setOnClickListener {
+            startActivity(Intent(this, RecordingsActivity::class.java))
         }
     }
 

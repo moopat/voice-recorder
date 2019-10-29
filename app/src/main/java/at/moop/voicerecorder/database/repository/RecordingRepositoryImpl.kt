@@ -1,5 +1,6 @@
 package at.moop.voicerecorder.database.repository
 
+import androidx.lifecycle.LiveData
 import at.moop.voicerecorder.database.RecordingDatabase
 import at.moop.voicerecorder.model.Recording
 
@@ -7,6 +8,10 @@ import at.moop.voicerecorder.model.Recording
  * @author Markus Deutsch <markus@moop.at>
  */
 class RecordingRepositoryImpl(private val database: RecordingDatabase) : RecordingRepository {
+
+    override fun getAllRecordings(): LiveData<List<Recording>> {
+        return database.getRecordingDao().getAllLive()
+    }
 
     override fun storeRecording(recording: Recording) {
         Thread(Runnable {

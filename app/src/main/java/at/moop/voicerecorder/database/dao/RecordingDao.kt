@@ -13,6 +13,9 @@ interface RecordingDao {
     @Query("SELECT * FROM recording ORDER BY startTime DESC")
     fun getAll(): List<Recording>
 
+    @Query("SELECT * FROM recording ORDER BY startTime DESC")
+    fun getAllLive(): LiveData<List<Recording>>
+
     @Query("SELECT * FROM recording WHERE uid = :uid ORDER BY startTime DESC")
     fun getByUid(uid: String): Recording?
 

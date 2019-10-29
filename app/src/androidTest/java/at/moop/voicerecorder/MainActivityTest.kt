@@ -8,6 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import at.moop.voicerecorder.database.RecordingDatabase
+import at.moop.voicerecorder.ui.MainActivity
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
