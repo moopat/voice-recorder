@@ -1,34 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     tools:context=".ui.MainActivity">
 
-    <ImageButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonToggleRecording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:contentDescription="@string/main_button_toggle_cd"
-        android:src="@drawable/ic_microphone_40dp" />
-
+        android:src="@drawable/ic_microphone_40dp"
+        app:backgroundTint="@color/colorAccent"
+        app:fabCustomSize="82dp"
+        app:tint="@color/white" />
 
     <TextView
         android:id="@+id/tvStatus"
+        style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonToggleRecording"
         android:layout_centerHorizontal="true"
-        tools:text="Hello World!" />
+        android:layout_marginTop="16dp"
+        tools:text="16:42" />
 
     <Button
         android:id="@+id/buttonShowAll"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
         android:text="@string/main_button_show_all" />
 
 </RelativeLayout>

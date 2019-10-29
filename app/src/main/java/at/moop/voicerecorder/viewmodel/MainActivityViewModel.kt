@@ -8,6 +8,6 @@ import at.moop.voicerecorder.database.RecordingDatabase
  */
 class MainActivityViewModel(private val database: RecordingDatabase) : ViewModel() {
 
-    fun getActiveRecording() = database.getRecordingDao().getActiveRecordingLive()
+    val activeRecording = database.getRecordingDao().getActiveRecordingLive()
 
 }

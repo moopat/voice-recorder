@@ -3,12 +3,15 @@ package at.moop.voicerecorder.ui
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import at.moop.voicerecorder.R
+import at.moop.voicerecorder.formatAsDuration
 import at.moop.voicerecorder.service.RecordingService
 import at.moop.voicerecorder.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,16 +24,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     val model: MainActivityViewModel by viewModel()
+    val tickHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        model.getActiveRecording().observe(this, Observer {
+        model.activeRecording.observe(this, Observer {
             if (it == null) {
-                tvStatus.setText(R.string.main_status_idle)
+                buttonToggleRecording.backgroundTintList =
+                    ColorStateList.valueOf(getColor(R.color.colorStateIdle))
             } else {
-                tvStatus.setText(R.string.main_status_recording)
+                buttonToggleRecording.backgroundTintList =
+                    ColorStateList.valueOf(getColor(R.color.colorStateRecording))
             }
         })
 
@@ -45,6 +51,29 @@ class MainActivity : AppCompatActivity() {
         buttonShowAll.setOnClickListener {
             startActivity(Intent(this, RecordingsActivity::class.java))
         }
+    }
+
+    private fun updateDuration() {
+        tvStatus.text =
+            (model.activeRecording.value?.getDuration(true) ?: 0).formatAsDuration()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startTicking()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopTicking()
+    }
+
+    private fun startTicking() {
+        tickHandler.post(TickRunnable())
+    }
+
+    private fun stopTicking() {
+        tickHandler.removeCallbacksAndMessages(null)
     }
 
     private fun toggleRecording() {
@@ -74,5 +103,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             // TODO: Remember that the permission was denied.
         }
+    }
+
+    inner class TickRunnable : Runnable {
+        override fun run() {
+            runOnUiThread {
+                updateDuration()
+                tickHandler.postDelayed(this, 100)
+            }
+        }
+
     }
 }
