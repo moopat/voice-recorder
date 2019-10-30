@@ -13,6 +13,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.database.repository.RecordingRepository
+import at.moop.voicerecorder.formatAsDuration
 import at.moop.voicerecorder.model.Recording
 import org.koin.android.ext.android.inject
 import java.io.File
@@ -123,7 +124,7 @@ class RecordingService : Service() {
         val builder = NotificationCompat.Builder(this, createDefaultNotificationChannel())
             .setSmallIcon(R.drawable.ic_stat_mic_none)
             .setContentTitle(getString(R.string.notification_title))
-            .setContentText(recording?.getDuration(true)?.toString() ?: "---")
+            .setContentText((recording?.getDuration(true) ?: 0).formatAsDuration())
             .setOngoing(true)
 
         return builder.build()
