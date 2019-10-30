@@ -11,4 +11,5 @@
     <string name="recordings_item_today">Today, %s</string>
     <string name="recordings_delete">Long-press to delete</string>
     <string name="recordings_empty">There are no recordings at this time\n¯\_(ツ)_/¯</string>
+    <string name="main_button_permission">Grant microphone permission</string>
 </resources>

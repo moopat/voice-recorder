@@ -7,8 +7,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,6 +22,7 @@ import at.moop.voicerecorder.service.RecordingService
 import at.moop.voicerecorder.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,6 +59,12 @@ class MainActivity : AppCompatActivity() {
         buttonShowAll.setOnClickListener {
             startActivity(Intent(this, RecordingsActivity::class.java))
         }
+
+        buttonGrantPermission.setOnClickListener {
+            startActivity(Intent(ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            })
+        }
     }
 
     private fun updateDuration() {
@@ -66,12 +76,27 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         startTicking()
         registerReceiver(receiver, IntentFilter(RecordingService.BROADCAST_AMPLITUDE))
+
+        // If the user has denied the mic permission, we need to hide the record button
+        updateButtonVisibilities()
     }
 
     override fun onPause() {
         super.onPause()
         stopTicking()
         unregisterReceiver(receiver)
+    }
+
+    private fun updateButtonVisibilities() {
+        if (model.isPermissionDenied() && !hasRecordingPermission()) {
+            buttonGrantPermission.visibility = View.VISIBLE
+            buttonToggleRecording.visibility = View.GONE
+            tvStatus.visibility = View.GONE
+        } else {
+            buttonGrantPermission.visibility = View.GONE
+            buttonToggleRecording.visibility = View.VISIBLE
+            tvStatus.visibility = View.VISIBLE
+        }
     }
 
     private fun startTicking() {
@@ -107,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         if (hasRecordingPermission()) {
             toggleRecording()
         } else {
-            // TODO: Remember that the permission was denied.
+            model.setPermissionDenied(true)
         }
     }
 

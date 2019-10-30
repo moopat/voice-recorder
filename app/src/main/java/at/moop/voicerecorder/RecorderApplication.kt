@@ -27,7 +27,7 @@ class RecorderApplication : Application() {
             modules(module {
                 single { RecordingDatabase.buildDatabase(androidContext()) }
                 single { RecordingRepositoryImpl(get()) as RecordingRepository }
-                viewModel { MainActivityViewModel(get()) }
+                viewModel { MainActivityViewModel(get(), get()) }
                 viewModel { RecordingsViewModel(get()) }
                 viewModel { PlaybackViewModel(get()) }
             })
