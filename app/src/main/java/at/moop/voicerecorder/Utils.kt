@@ -1,5 +1,7 @@
 package at.moop.voicerecorder
 
+import android.graphics.Color
+import at.moop.voicerecorder.model.Recording
 import java.util.concurrent.TimeUnit
 
 /**
@@ -25,4 +27,17 @@ fun Long.formatAsDuration(): String {
 
 fun Int.formatAsDuration(): String {
     return toLong().formatAsDuration()
+}
+
+fun Recording.getHue(): Float {
+    val duration = getDuration(true) ?: 0
+    return duration.rem(70).toFloat()
+}
+
+fun Recording.getColor(): Int {
+    return Color.HSVToColor(
+        floatArrayOf(
+            getHue(), 0.8f, 0.9f
+        )
+    )
 }

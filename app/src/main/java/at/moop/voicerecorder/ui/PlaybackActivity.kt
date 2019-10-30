@@ -2,6 +2,7 @@ package at.moop.voicerecorder.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.formatAsDuration
+import at.moop.voicerecorder.getColor
 import at.moop.voicerecorder.viewmodel.PlaybackViewModel
 import kotlinx.android.synthetic.main.activity_playback.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,6 +53,10 @@ class PlaybackActivity : AppCompatActivity() {
                 return@Observer
             }
             tvTotalDuration.text = it.getDuration(false)?.formatAsDuration()
+            ColorStateList.valueOf(it.getColor()).let { csl ->
+                buttonTogglePlayback.backgroundTintList = csl
+                seekBar.thumbTintList = csl
+            }
         })
 
         model.progress.observe(this, Observer {

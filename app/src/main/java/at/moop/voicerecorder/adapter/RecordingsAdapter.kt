@@ -2,13 +2,13 @@ package at.moop.voicerecorder.adapter
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.adapter.vh.RecordingViewHolder
 import at.moop.voicerecorder.formatAsDuration
+import at.moop.voicerecorder.getColor
 import at.moop.voicerecorder.model.Recording
 import java.text.DateFormat
 import java.util.*
@@ -49,13 +49,7 @@ class RecordingsAdapter(private val clickHandler: (recording: Recording) -> Unit
     override fun onBindViewHolder(holder: RecordingViewHolder, position: Int) {
         val item = items[position]
 
-        holder.ivIcon.backgroundTintList = ColorStateList.valueOf(
-            Color.HSVToColor(
-                floatArrayOf(
-                    getRecordingHue(item), 0.8f, 0.9f
-                )
-            )
-        )
+        holder.ivIcon.backgroundTintList = ColorStateList.valueOf(item.getColor())
 
         if (item.isRunning()) {
             holder.tvDate.setText(R.string.main_status_recording)
@@ -71,11 +65,6 @@ class RecordingsAdapter(private val clickHandler: (recording: Recording) -> Unit
         }
 
 
-    }
-
-    private fun getRecordingHue(recording: Recording): Float {
-        val duration = recording.getDuration(true) ?: 0
-        return duration.rem(70).toFloat()
     }
 
     private fun Recording.getStartTimeString(context: Context): String {
