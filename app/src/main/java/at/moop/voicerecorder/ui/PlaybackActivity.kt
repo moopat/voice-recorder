@@ -2,6 +2,7 @@ package at.moop.voicerecorder.ui
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -82,12 +83,12 @@ class PlaybackActivity : AppCompatActivity() {
             return
         }
 
-        buttonTogglePlayback.setImageResource(R.drawable.ic_stop)
+        (buttonTogglePlayback.drawable as AnimatedVectorDrawable).start()
 
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
             setOnCompletionListener {
-                buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow)
+                (buttonTogglePlayback.drawable as AnimatedVectorDrawable).reset()
                 model.progress.postValue(0)
             }
             setDataSource(mediaFile.path)
@@ -103,7 +104,7 @@ class PlaybackActivity : AppCompatActivity() {
         mediaPlayer?.release()
         mediaPlayer = null
         model.progress.postValue(0)
-        buttonTogglePlayback.setImageResource(R.drawable.ic_play_arrow)
+        (buttonTogglePlayback.drawable as AnimatedVectorDrawable).reset()
     }
 
     override fun onStop() {
