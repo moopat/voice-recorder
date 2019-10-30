@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="@dimen/spacing_default"
     tools:context=".ui.MainActivity">
 
     <at.moop.voicerecorder.widget.RockingCircle
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonToggleRecording"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/spacing_default"
         tools:text="16:42" />
 
     <Button
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/spacing_default"
         android:text="@string/main_button_show_all" />
 
 </RelativeLayout>

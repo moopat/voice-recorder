@@ -6,7 +6,7 @@
     android:foreground="?android:selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:padding="@dimen/spacing_default">
 
     <ImageView
         android:id="@+id/ivIcon"
@@ -20,8 +20,8 @@
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/spacing_default"
+        android:layout_marginEnd="@dimen/spacing_default"
         android:layout_weight="1"
         tools:text="11.11.2019 11:11:11" />
 

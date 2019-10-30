@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="@dimen/spacing_small"
     android:orientation="vertical"
     tools:context=".ui.PlaybackActivity">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="16dp">
+        android:padding="@dimen/spacing_default">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/buttonTogglePlayback"
@@ -20,8 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
+            android:paddingTop="@dimen/spacing_default"
+            android:paddingBottom="@dimen/spacing_default"
             android:src="@drawable/avd_play_stop"
             app:fabCustomSize="48dp"
             app:tint="@color/white" />
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/spacing_small"
             android:layout_toEndOf="@id/buttonTogglePlayback" />
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/seekBar"
             android:layout_alignStart="@id/seekBar"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/spacing_default"
             android:layout_marginTop="24dp"
             tools:text="00:00" />
 
@@ -53,7 +53,7 @@
             android:layout_below="@id/seekBar"
             android:layout_alignEnd="@id/seekBar"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/spacing_default"
             tools:text="16:11" />
 
     </RelativeLayout>
@@ -64,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/spacing_small"
         android:text="@string/recordings_delete" />
 
 </LinearLayout>
