@@ -5,6 +5,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import at.moop.voicerecorder.BaseIntegrationTest
@@ -62,6 +63,7 @@ class PlaybackActivityTest : BaseIntegrationTest() {
     }
 
     @Test
+    @RequiresDevice
     fun testPlayback() {
 
         // Launch the activity
@@ -105,6 +107,7 @@ class PlaybackActivityTest : BaseIntegrationTest() {
     }
 
     @Test
+    @RequiresDevice
     fun testPlaybackStop() {
 
         // Launch the activity

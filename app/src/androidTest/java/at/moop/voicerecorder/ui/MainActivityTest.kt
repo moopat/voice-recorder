@@ -52,7 +52,7 @@ class MainActivityTest : BaseIntegrationTest() {
         // Click the button.
         onView(withId(R.id.buttonToggleRecording)).perform(click())
 
-        delay(1000)
+        delay(2000)
 
         onView(withId(R.id.tvStatus)).check(matches(not(withText("00:00"))))
 
