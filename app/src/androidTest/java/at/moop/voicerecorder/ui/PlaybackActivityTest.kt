@@ -13,8 +13,7 @@ import at.moop.voicerecorder.database.RecordingDatabase
 import at.moop.voicerecorder.formatAsDuration
 import at.moop.voicerecorder.model.Recording
 import org.junit.After
-import org.junit.Assert.assertNotEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -106,6 +105,26 @@ class PlaybackActivityTest : BaseIntegrationTest() {
         // Playback is not running (null and false are okay)
         assertNotEquals(true, rule.activity.mediaPlayer?.isPlaying == true)
         onView(withId(R.id.tvProgress)).check(matches(withText(0.formatAsDuration())))
+    }
+
+    @Test
+    fun testDeletion() {
+
+        // Launch the activity
+        rule.launchActivity(PlaybackActivity.getIntent(getContext(), FILE_NAME))
+
+        // Press delete.
+        // Because of an issue with long-clicking in the test, we access the ViewModel directly
+        rule.activity.model.deleteRecording(getContext())
+
+        // Deletion is done asynchronously
+        delay(200)
+
+        assertNull(
+            RecordingDatabase.buildDatabase(getContext()).getRecordingDao().getByUid(
+                FILE_NAME
+            )
+        )
     }
 
 }

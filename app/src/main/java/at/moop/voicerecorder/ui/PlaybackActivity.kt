@@ -31,7 +31,7 @@ class PlaybackActivity : AppCompatActivity() {
 
     }
 
-    private val model: PlaybackViewModel by viewModel()
+    val model: PlaybackViewModel by viewModel()
     var mediaPlayer: MediaPlayer? = null
     private var seekbarUpdateHandler = Handler()
 
