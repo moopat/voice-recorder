@@ -15,6 +15,7 @@ import at.moop.voicerecorder.BaseIntegrationTest
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.database.RecordingDatabase
 import at.moop.voicerecorder.model.Recording
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -45,9 +46,7 @@ class RecordingsActivityTest : BaseIntegrationTest() {
     fun prepareData() {
         val dao = RecordingDatabase.buildDatabase(getContext()).getRecordingDao()
         dao.deleteAll()
-        Log.d("RecordingsActivityTest", "Preparing data...")
         for (i in 1..NUMBER_OF_ITEMS) {
-            Log.d("RecordingsActivityTest", "Inserting element $i")
             dao.insert(Recording(UUID.randomUUID().toString(), Date(), Date()))
         }
     }
@@ -59,6 +58,18 @@ class RecordingsActivityTest : BaseIntegrationTest() {
         assertNotNull(recyclerView)
         delay(200)
         assertEquals(NUMBER_OF_ITEMS, recyclerView.adapter?.itemCount)
+        onView(withId(R.id.tvEmpty)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun testEmptyView() {
+        clearDatabase()
+        rule.launchActivity(Intent(getContext(), RecordingsActivity::class.java))
+        val recyclerView = rule.activity.findViewById<RecyclerView>(R.id.recyclerView)
+        assertNotNull(recyclerView)
+        delay(200)
+        assertEquals(0, recyclerView.adapter?.itemCount)
+        onView(withId(R.id.tvEmpty)).check(matches(isDisplayed()))
     }
 
     @Test

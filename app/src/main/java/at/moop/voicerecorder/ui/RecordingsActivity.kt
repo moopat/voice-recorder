@@ -2,6 +2,7 @@ package at.moop.voicerecorder.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -30,6 +31,11 @@ class RecordingsActivity : AppCompatActivity() {
 
         model.recordings.observe(this, Observer {
             adapter.setData(it)
+            if (it.isEmpty()) {
+                tvEmpty.visibility = View.VISIBLE
+            } else {
+                tvEmpty.visibility = View.GONE
+            }
         })
     }
 

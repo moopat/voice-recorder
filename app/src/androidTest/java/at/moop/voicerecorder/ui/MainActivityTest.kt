@@ -10,6 +10,7 @@ import androidx.test.rule.GrantPermissionRule
 import at.moop.voicerecorder.BaseIntegrationTest
 import at.moop.voicerecorder.R
 import at.moop.voicerecorder.database.RecordingDatabase
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -45,20 +46,20 @@ class MainActivityTest : BaseIntegrationTest() {
 
     @Test
     fun testToggleButtonClick() {
-        // First "idle" is shown.
-        onView(withId(R.id.tvStatus)).check(matches(withText(R.string.main_status_idle)))
+        // Default view
+        onView(withId(R.id.tvStatus)).check(matches(withText("00:00")))
 
         // Click the button.
         onView(withId(R.id.buttonToggleRecording)).perform(click())
 
-        // Now "recording" is shown.
-        onView(withId(R.id.tvStatus)).check(matches(withText(R.string.main_status_recording)))
+        delay(1000)
+
+        onView(withId(R.id.tvStatus)).check(matches(not(withText("00:00"))))
 
         // Click again.
         onView(withId(R.id.buttonToggleRecording)).perform(click())
 
-        // Idle is shown again.
-        onView(withId(R.id.tvStatus)).check(matches(withText(R.string.main_status_idle)))
+        onView(withId(R.id.tvStatus)).check(matches(withText("00:00")))
     }
 
     @Test

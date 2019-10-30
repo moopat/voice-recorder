@@ -1,6 +1,5 @@
 package at.moop.voicerecorder.ui
 
-import android.os.FileUtils
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -52,10 +51,11 @@ class PlaybackActivityTest : BaseIntegrationTest() {
         // Copy file from assets.
         val targetFile = File(getContext().filesDir, FILE_NAME)
 
-        FileUtils.copy(
-            InstrumentationRegistry.getInstrumentation().context.assets.open(FILE_NAME),
-            targetFile.outputStream()
-        )
+        InstrumentationRegistry.getInstrumentation().context.assets.open(FILE_NAME).use { fis ->
+            targetFile.outputStream().use { fos ->
+                fis.copyTo(fos)
+            }
+        }
 
         // Add database record.
         val recording = Recording(FILE_NAME, Date(), Date())
