@@ -86,6 +86,25 @@ class PlaybackActivityTest : BaseIntegrationTest() {
     }
 
     @Test
+    fun testMissingFilePlayback() {
+
+        // Remove the file
+        File(getContext().filesDir, FILE_NAME).let {
+            if (it.exists()) {
+                it.delete()
+            }
+        }
+
+        // Launch the activity
+        rule.launchActivity(PlaybackActivity.getIntent(getContext(), FILE_NAME))
+
+        onView(withId(R.id.buttonTogglePlayback)).check(matches(isDisplayed()))
+        onView(withId(R.id.buttonTogglePlayback)).perform(click())
+
+        // Just don't crash.
+    }
+
+    @Test
     fun testPlaybackStop() {
 
         // Launch the activity
