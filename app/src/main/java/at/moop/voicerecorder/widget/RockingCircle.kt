@@ -22,8 +22,8 @@ import kotlin.math.min
 class RockingCircle(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     companion object {
-        private const val GROW_ANIMATION_DURATION: Long = 800
-        private const val SHRINK_ANIMATION_DURATION: Long = 1500
+        private const val GROW_ANIMATION_DURATION: Long = 700
+        private const val SHRINK_ANIMATION_DURATION: Long = 1400
         private const val MAX_ALPHA = 255
     }
 

@@ -165,7 +165,7 @@ class RecordingService : Service() {
                 putExtra(EXTRA_AMPLITUDE, recorder.maxAmplitude)
             })
 
-            handler.postDelayed(this, 1000)
+            handler.postDelayed(this, 900)
         }
 
     }
